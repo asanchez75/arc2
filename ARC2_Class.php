@@ -233,7 +233,11 @@ class ARC2_Class {
         foreach ($os as $i => $o) {
           if (!is_array($o)) {
             $o_val = $this->expandPName($o);
-            $o_type = preg_match('/^[a-z]+\:[^\s\<\>]+$/si', $o_val) ? 'uri' : 'literal';
+						// Semberry patch to avoid errors for non-strings
+						if (!is_string($o_val))
+						  $o_type = 'literal';
+						else  // end of patch
+              $o_type = preg_match('/^[a-z]+\:[^\s\<\>]+$/si', $o_val) ? 'uri' : 'literal';
             $o = array('value' => $o_val, 'type' => $o_type);
           }
           $os[$i] = $o;
